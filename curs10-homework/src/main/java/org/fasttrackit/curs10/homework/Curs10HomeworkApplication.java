@@ -1,8 +1,7 @@
 package org.fasttrackit.curs10.homework;
 
 import org.fasttrackit.curs10.homework.model.Location;
-import org.fasttrackit.curs10.homework.model.Train;
-import org.fasttrackit.curs10.homework.model.entities.TrainEntity;
+import org.fasttrackit.curs10.homework.model.entities.Train;
 import org.fasttrackit.curs10.homework.model.mappers.TrainMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +18,7 @@ public class Curs10HomeworkApplication {
 	@Bean
 	CommandLineRunner forTest(TrainMapper mapper){
 		return args -> {
-			System.out.println(mapper.toApi(new TrainEntity("123","model", (byte) 12,new Location("test","Cluj"))));
+			System.out.println(mapper.toEntity(new Train("model12",12,new Location("123","123"))));
 		};
 	}
 }

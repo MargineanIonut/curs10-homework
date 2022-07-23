@@ -6,6 +6,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class LocationEntity {
-    private final String id;
     private final String city;
 }

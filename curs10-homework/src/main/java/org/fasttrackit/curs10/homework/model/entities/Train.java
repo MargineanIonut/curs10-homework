@@ -1,14 +1,15 @@
 package org.fasttrackit.curs10.homework.model.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.fasttrackit.curs10.homework.model.Location;
 
 @Data
 @AllArgsConstructor
-public class TrainEntity {
-    private  String id;
+@Builder
+public class Train {
     private  String model;
-    private  Byte carts;
+    private  Integer carts;
     private  Location location;
 }
