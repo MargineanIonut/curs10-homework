@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public record TrainEntity(String id,
                           String model,
                           Integer carts,
-                          LocationsEntity currentTrainLocation,
-                          Route route)
+                          LocationsEntity currentTrainLocation
+)
 {
     @Builder(toBuilder = true) public TrainEntity {}
 }

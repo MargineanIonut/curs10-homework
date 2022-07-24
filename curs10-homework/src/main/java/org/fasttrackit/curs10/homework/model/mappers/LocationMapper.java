@@ -14,4 +14,12 @@ public class LocationMapper {
                 .city(route.city())
                 .build();
     }
+
+
+
+    public Location toApi(LocationsEntity route){
+        return Location.builder()
+                .city(route.city())
+                .build();
+    }
 }

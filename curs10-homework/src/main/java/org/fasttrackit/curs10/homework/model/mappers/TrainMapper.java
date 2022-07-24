@@ -25,7 +25,6 @@ public class TrainMapper {
                 .model(train.model())
                 .carts(train.carts())
                 .currentTrainLocation(byCity)
-                .route(train.route())
                 .build();
 
     }
