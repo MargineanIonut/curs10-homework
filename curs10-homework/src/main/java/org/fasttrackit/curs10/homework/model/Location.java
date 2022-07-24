@@ -2,7 +2,9 @@ package org.fasttrackit.curs10.homework.model;
 
 import lombok.Builder;
 
-public record Location (String city)
+import java.util.List;
+
+public record Location (String id ,List<String> city)
 {
     @Builder public Location{}
 }

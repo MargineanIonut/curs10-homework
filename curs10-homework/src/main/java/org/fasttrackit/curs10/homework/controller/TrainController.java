@@ -22,9 +22,18 @@ public class TrainController {
         return service.save(train);
     }
 
+    @PostMapping("city")
+    public boolean addCity(TrainFilter city){
+        return service.addCity(city);
+    }
+
     @DeleteMapping
     public void deleteTrain(TrainFilter train){
          service.delete(train);
+    }
+    @DeleteMapping("city")
+    public void deleteCity(TrainFilter train){
+        service.deleteCity(train);
     }
 
     @PatchMapping({"id"})
