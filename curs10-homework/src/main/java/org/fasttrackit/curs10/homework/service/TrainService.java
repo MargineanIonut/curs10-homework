@@ -12,7 +12,10 @@ import org.fasttrackit.curs10.homework.model.entities.TrainEntity;
 import org.fasttrackit.curs10.homework.model.Train;
 import org.fasttrackit.curs10.homework.model.filter.TrainFilter;
 import org.fasttrackit.curs10.homework.model.mappers.TrainMapper;
+import org.fasttrackit.curs10.homework.repository.TrainDao;
 import org.fasttrackit.curs10.homework.repository.TrainRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,14 +25,16 @@ public class TrainService {
 
     private final TrainRepository repository;
     private final TrainMapper mapper;
+    private final TrainDao trainDao;
 
     public TrainEntity save(Train train){
         return repository.save(mapper.toEntity(train));
     }
 
     public void delete(@RequestBody TrainFilter train) {
-        TrainEntity trainEntity = repository.findById(train.id()).orElseThrow(() -> new TrainNotFoundException());
-        repository.delete(trainEntity);
+        repository.delete(
+                repository.findById(train.id())
+                          .orElseThrow(TrainNotFoundException::new));
 
     }
 
@@ -38,7 +43,6 @@ public class TrainService {
                 .map(dbEntity -> applyPatch(dbEntity, train))
                 .map(dbEntity -> replaceTrain(id, dbEntity))
                 .orElseThrow(OperationNotCompletedException::new);
-
     }
 
     private TrainEntity replaceTrain(String id, TrainEntity updatedEntity) {
@@ -58,5 +62,9 @@ public class TrainService {
         } catch (JsonProcessingException | JsonPatchException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Page<TrainEntity> getTrains(TrainFilter filter, Pageable pageable) {
+        return trainDao.getTrains(filter, pageable);
     }
 }
