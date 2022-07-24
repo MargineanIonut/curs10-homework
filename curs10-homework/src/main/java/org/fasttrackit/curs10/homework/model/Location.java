@@ -1,4 +1,8 @@
 package org.fasttrackit.curs10.homework.model;
 
-public record Location(String id, String city) {
+import lombok.Builder;
+
+public record Location (String city)
+{
+    @Builder public Location{}
 }

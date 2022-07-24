@@ -16,4 +16,10 @@ public class ExceptionAdvice {
     public void trainNotFoundExceptionHandler(TrainNotFoundException exception){
         log.info(exception.MESSAGE);
     }
+
+    @ExceptionHandler(OperationNotCompletedException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    public void trainNotFoundExceptionHandler(OperationNotCompletedException exception){
+        log.info(exception.MESSAGE);
+    }
 }

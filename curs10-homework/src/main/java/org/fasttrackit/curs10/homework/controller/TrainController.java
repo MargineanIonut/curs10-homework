@@ -1,8 +1,9 @@
 package org.fasttrackit.curs10.homework.controller;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import lombok.RequiredArgsConstructor;
-import org.fasttrackit.curs10.homework.model.TrainEntity;
-import org.fasttrackit.curs10.homework.model.entities.Train;
+import org.fasttrackit.curs10.homework.model.entities.TrainEntity;
+import org.fasttrackit.curs10.homework.model.Train;
 import org.fasttrackit.curs10.homework.model.filter.TrainFilter;
 import org.fasttrackit.curs10.homework.service.TrainService;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,12 @@ public class TrainController {
     }
 
     @DeleteMapping
-    public void deleteTrain(@RequestBody TrainFilter train){
+    public void deleteTrain(TrainFilter train){
          service.delete(train);
+    }
+
+    @PatchMapping({"id"})
+    public TrainEntity updateTrain(@PathVariable String id, @RequestBody JsonPatch train){
+        return service.updateTrain(id, train);
     }
 }

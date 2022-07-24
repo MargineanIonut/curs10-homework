@@ -1,7 +1,7 @@
 package org.fasttrackit.curs10.homework.model.mappers;
 
-import org.fasttrackit.curs10.homework.model.TrainEntity;
-import org.fasttrackit.curs10.homework.model.entities.Train;
+import org.fasttrackit.curs10.homework.model.entities.TrainEntity;
+import org.fasttrackit.curs10.homework.model.Train;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -9,12 +9,12 @@ import java.util.UUID;
 @Component
 public class TrainMapper {
 
-    public TrainEntity toEntity(Train entity){
+    public TrainEntity toEntity(Train train){
         return TrainEntity.builder()
                 .id(String.valueOf(UUID.randomUUID()))
-                .model(entity.getModel())
-                .carts(entity.getCarts())
-                .location(entity.getLocation())
+                .model(train.model())
+                .carts(train.carts())
+                .location(train.location())
                 .build();
     }
 
