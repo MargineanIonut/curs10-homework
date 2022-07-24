@@ -1,6 +1,4 @@
 package org.fasttrackit.curs10.homework.model.filter;
 
-import org.fasttrackit.curs10.homework.model.entities.LocationEntity;
-
-public record TrainFilter(String id, String model, Integer carts, Short minCartsNumber, Short maxCartsNumber, LocationEntity location) {
+public record TrainFilter(String id,String model, Integer carts, Short minCartsNumber, Short maxCartsNumber, String location) {
 }

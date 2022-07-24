@@ -29,10 +29,11 @@ public class TrainDao {
         ofNullable(filter.model())
                 .ifPresent(model -> criteriaQuery.and("model").is(model));
         ofNullable(filter.location())
-                .ifPresent(location -> criteriaQuery.and("location").is(locationRepository.findByCity(filter.location().city())));
+                .ifPresent(city -> criteriaQuery.and("location.city").is(city));
         ofNullable(filter.minCartsNumber())
-                .ifPresent(minCartsNumber -> criteriaQuery.and("minCartsNumber").gt(minCartsNumber));
-        ofNullable(filter.maxCartsNumber()).ifPresent(maxCartsNumber -> criteriaQuery.and("maxCartsNumber").lt(maxCartsNumber));
+                .ifPresent(minCartsNumber -> criteriaQuery.and("carts").gte(minCartsNumber));
+        ofNullable(filter.maxCartsNumber())
+                .ifPresent(maxCartsNumber -> criteriaQuery.and("carts").lt(maxCartsNumber));
 
         Query query = Query.query(criteriaQuery).with(pageable);
         List<TrainEntity> content = mongoTemplate.find(query,TrainEntity.class);
