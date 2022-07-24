@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.RequiredArgsConstructor;
+import org.fasttrackit.curs10.homework.exception.LocationNotFoundException;
 import org.fasttrackit.curs10.homework.exception.OperationNotCompletedException;
 import org.fasttrackit.curs10.homework.exception.TrainNotFoundException;
+import org.fasttrackit.curs10.homework.model.entities.LocationsEntity;
 import org.fasttrackit.curs10.homework.model.entities.TrainEntity;
 import org.fasttrackit.curs10.homework.model.Train;
 import org.fasttrackit.curs10.homework.model.filter.TrainFilter;
@@ -18,11 +20,6 @@ import org.fasttrackit.curs10.homework.repository.TrainRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +30,9 @@ public class TrainService {
     private final TrainMapper mapper;
     private final TrainDao trainDao;
 
-    public TrainEntity save(Train train){
-        return repository.save(mapper.toEntity(train));
+    public Train save(Train train){
+        repository.save(mapper.toEntity(train));
+        return train;
 
     }
 
@@ -47,22 +45,24 @@ public class TrainService {
 
     public void deleteCity(TrainFilter train) {
         TrainEntity byId = repository.findById(train.id()).orElseThrow(TrainNotFoundException::new);
-        byId.location().city().remove(train.location());
-        repository.save(byId.toBuilder().build());
+        repository.save(byId.toBuilder()
+                .currentTrainLocation(LocationsEntity.builder().build())
+                .build());
     }
 
-    public TrainEntity updateTrain(String id, JsonPatch train) {
-        return repository.findById(id)
+    public Train updateTrain(String id, JsonPatch train) {
+        TrainEntity trainEntity = repository.findById(id)
                 .map(dbEntity -> applyPatch(dbEntity, train))
                 .map(dbEntity -> replaceTrain(id, dbEntity))
                 .orElseThrow(OperationNotCompletedException::new);
+        return mapper.toApi(trainEntity);
     }
 
     private TrainEntity replaceTrain(String id, TrainEntity updatedEntity) {
         TrainEntity trainEntity = repository.findById(id).orElseThrow(TrainNotFoundException::new);
         return repository.save(trainEntity.toBuilder()
                 .carts(updatedEntity.carts())
-                .location(updatedEntity.location())
+                .currentTrainLocation(updatedEntity.currentTrainLocation())
                 .build());
     }
 
@@ -77,15 +77,19 @@ public class TrainService {
         }
     }
 
-    public Page<TrainEntity> getTrains(TrainFilter filter, Pageable pageable) {
+    public Page<Train> getTrains(TrainFilter filter, Pageable pageable) {
         return trainDao.getTrains(filter, pageable);
     }
 
 
-    public boolean addCity(TrainFilter dto) {
+    public void addCity(TrainFilter dto) {
         TrainEntity byId = repository.findById(dto.id()).orElseThrow(TrainNotFoundException::new);
-        boolean added = byId.location().city().add(dto.location());
-        repository.save(byId.toBuilder().build());
-        return added;
+
+        LocationsEntity byCity = locationRepository.findByCity(dto.location()).orElseThrow(LocationNotFoundException::new)
+                .toBuilder().city(dto.location()).build();
+
+        repository.save(byId.toBuilder()
+                .currentTrainLocation(byCity).build());
+
     }
 }

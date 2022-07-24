@@ -1,15 +1,16 @@
 package org.fasttrackit.curs10.homework.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import org.fasttrackit.curs10.homework.model.entities.TrainEntity;
+
+import java.util.List;
 
 public record Route(
         String start,
         String destination,
-        Byte length,
-        TrainEntity trainEntity)
-{
-    @Builder public Route{};
+        Integer distanceInKm,
+        List<TrainEntity> trains
+) {
+    @Builder public Route {}
 }
+

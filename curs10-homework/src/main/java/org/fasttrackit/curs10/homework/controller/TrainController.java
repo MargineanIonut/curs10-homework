@@ -18,31 +18,32 @@ public class TrainController {
     private final TrainService service;
 
     @PostMapping
-    public TrainEntity saveTrain(@RequestBody Train train){
+    public Train saveTrain(@RequestBody Train train) {
         return service.save(train);
     }
 
     @PostMapping("city")
-    public boolean addCity(TrainFilter city){
-        return service.addCity(city);
+    public void addCity(TrainFilter city) {
+        service.addCity(city);
     }
 
     @DeleteMapping
-    public void deleteTrain(TrainFilter train){
-         service.delete(train);
+    public void deleteTrain(TrainFilter train) {
+        service.delete(train);
     }
+
     @DeleteMapping("city")
-    public void deleteCity(TrainFilter train){
+    public void deleteCity(TrainFilter train) {
         service.deleteCity(train);
     }
 
     @PatchMapping({"id"})
-    public TrainEntity updateTrain(@PathVariable String id, @RequestBody JsonPatch train){
+    public Train updateTrain(@PathVariable String id, @RequestBody JsonPatch train) {
         return service.updateTrain(id, train);
     }
 
     @GetMapping
-    public Page<TrainEntity> getAll(TrainFilter filter, Pageable pageable){
-        return service.getTrains(filter,pageable);
+    public Page<Train> getAll(TrainFilter filter, Pageable pageable) {
+        return service.getTrains(filter, pageable);
     }
 }

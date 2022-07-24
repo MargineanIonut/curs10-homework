@@ -1,7 +1,5 @@
 package org.fasttrackit.curs10.homework.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

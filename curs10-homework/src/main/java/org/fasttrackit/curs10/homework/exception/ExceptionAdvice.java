@@ -22,4 +22,10 @@ public class ExceptionAdvice {
     public void trainNotFoundExceptionHandler(OperationNotCompletedException exception){
         log.info(exception.MESSAGE);
     }
+
+    @ExceptionHandler(LocationNotFoundException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    public void locationNotFoundExceptionHandler(LocationNotFoundException exception){
+        log.info(exception.MESSAGE);
+    }
 }
